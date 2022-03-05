@@ -17,7 +17,7 @@
 The Bigint Library is an [open source](https://opensource.org/osd) C library that allows users to make calculations involving signed integers of any size. The only limitation is amount of memory available on the specific platform. The code is made available on terms of [*The Mozilla Public License Version 2.0*](https://www.mozilla.org/en-US/MPL/2.0/) described precisely in the LICENSE file. The library is designed to be user-friendly and portable. It consists of two files thus no installation is needed.
 
 ## REQUIREMENTS
-The only requirement is C compiler. The library has been tested on several operating systems including Windows, Linux and MacOS. During trials various compilers were used on both 32-bit and 64-bit platforms. However, if you have any problems with the library on your computer, please contact me do I can fix the bug and make the project more portable.
+The only requirement is C compiler. The library has been tested on several operating systems including Windows, Linux and MacOS. During trials various compilers were used on both 32-bit and 64-bit platforms. However, if you have any problems with the library on your computer, please contact me so I can fix the bug and make the project more portable.
 
 ## USAGE
 
@@ -382,7 +382,7 @@ This function converts a bigint number to integer pointed to by *integer*. It om
 
 ## ACKNOWLEDGEMENTS
 
-The author thanks Augustyn Majtyka and Andrzej Mazur for help in this project.
+The author thanks Augustyn Majtyka, Andrzej Mazur and Jerzy Karczewski for help in this project.
 
 ## ABOUT AUTHOR
 
