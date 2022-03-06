@@ -84,28 +84,28 @@
 #endif
 
 // Macro that checks performance of malloc function; use only in functions that return pointer
-#define check_memory_ptr(A)                            \
-	if ((A) == NULL)                                   \
-	{                                                  \
+#define check_memory_ptr(A)                                    \
+	if ((A) == NULL)                                       \
+	{                                                      \
 		bigint_errno = BIGINT_MEMORY_ALLOCATION_ERROR; \
 		return NULL;                                   \
 	}
 
 // Macro that checks performance of malloc function; use only in functions that return integer
-#define check_memory_int(A)                            \
-	if ((A) == NULL)                                   \
-	{                                                  \
+#define check_memory_int(A)                                    \
+	if ((A) == NULL)                                       \
+	{                                                      \
 		bigint_errno = BIGINT_MEMORY_ALLOCATION_ERROR; \
 		return FAILURE;                                \
 	}
 
 // Macro that sets all node structure members to 0
-#define initialise_node(A)        \
+#define initialise_node(A)            \
 	(A)->next = (A)->prev = NULL; \
 	(A)->value = 0
 
 // Macro that sets all bigint structure members to 0
-#define initialise_bigint(A)       \
+#define initialise_bigint(A)           \
 	(A)->first = (A)->last = NULL; \
 	(A)->length = 0;               \
 	(A)->sign = 0
@@ -353,9 +353,9 @@ char *convert_to_binary(char *number, size_t length)
 
 	// Each string matches one hexadecimal digit
 	char *binary_numbers[] = {"0000", "0001", "0010", "0011",
-							  "0100", "0101", "0110", "0111",
-							  "1000", "1001", "1010", "1011",
-							  "1100", "1101", "1110", "1111"};
+				  "0100", "0101", "0110", "0111",
+				  "1000", "1001", "1010", "1011",
+				  "1100", "1101", "1110", "1111"};
 	char *hex_digits = "0123456789ABCDEF##########abcdef";
 
 	// Allocate memory for string the function is going to retrun
