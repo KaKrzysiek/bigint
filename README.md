@@ -280,7 +280,7 @@ Use this function to change *number* sign to positive.
 int bigint_get_sign(bigint number)
 ```
 
-This function returns sign of the *number*: 1 in case it is negative, 0 in case it is positive.
+This function returns sign of the *number*: 1 in case it is negative, 0 in case it is positive or 0.
 
 ### Copying
 
