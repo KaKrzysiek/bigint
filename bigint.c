@@ -42,7 +42,7 @@
 #define BIGINT_LITTLE_ENDIAN -1
 #define BIGINT_BIG_ENDIAN 1
 
-// Check perating system
+// Check operating system
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
 #define BIGINT_OS "Windows"
 #elif defined(__APPLE__)
@@ -363,7 +363,7 @@ char *convert_to_binary(char *number, size_t length)
 	check_memory_ptr(return_number);
 	memset(return_number, 0, length * 4 * sizeof(char) + 1);
 
-	// Convert each hexadecimal digit into four decimal digits
+	// Convert each hexadecimal digit into 4 decimal digits
 	size_t i = 0;
 	for (i = 0; i < length; i++)
 	{
@@ -594,7 +594,7 @@ bigint bigint_convert_to_bigint(void *integer, size_t length)
 	// Delete leading nodes with 0 value
 	bigint_node *temp = NULL;
 	current = return_number->last;
-	// i = 0 in case number equals zero
+	// leave one segment in case number equals zero
 	for (i = 1; i < segments; i++)
 	{
 		if (current->value == 0)
@@ -870,7 +870,6 @@ int print_decimal(bigint number)
 
 	if (number->length == 1)
 	{
-		// print_bits(current->value);
 		printf("%" PRINTING_FORMAT_SPECIFIER, (PRINTING_TYPE)number->first->value);
 		return SUCCESS;
 	}
@@ -1375,7 +1374,7 @@ int bigint_compare(bigint number1, bigint number2)
 		// number1 positive, number2 negative
 		return 1;
 	case 2:
-		// number1 negativem number2 positive
+		// number1 negative, number2 positive
 		return -1;
 	case 3:
 		// Both numbers negative
@@ -1500,7 +1499,7 @@ int bigint_add_sign(bigint sum, bigint summand1, bigint summand2)
 		return bigint_add_basic(sum, summand1, summand2);
 	case 1:
 	case 2:
-		// different sign
+		// Different sign
 		comparison = bigint_compare_absolute(summand1, summand2);
 		bigint bigger = (comparison == 1 ? summand1 : summand2);
 		bigint smaller = (comparison == 1 ? summand2 : summand1);
@@ -1593,7 +1592,7 @@ int bigint_increment_basic(bigint number)
 
 int bigint_increment(bigint number)
 {
-	// Wrong arguments
+	// Wrong argument
 	if (number == NULL)
 	{
 		bigint_errno = BIGINT_INCORRECT_FUNCTION_ARGUMENT;
@@ -1733,13 +1732,13 @@ int bigint_decrement_basic(bigint number)
 
 int bigint_decrement(bigint number)
 {
-	// Wrong arguments
+	// Wrong argument
 	if (number == NULL)
 	{
 		bigint_errno = BIGINT_INCORRECT_FUNCTION_ARGUMENT;
 		return FAILURE;
 	}
-	// if zero passed to function
+	// In case zero passed to function
 	if (number->length == 1 && number->first->value == 0)
 	{
 		number->first->value += 1;
@@ -1794,14 +1793,14 @@ int add_segments(bigint number, size_t count)
 int bigint_multiply_basic(bigint product, bigint _element1, bigint _element2)
 {
 
-	// Wrong argument passed to function
+	// Wrong arguments passed to function
 	if (product == NULL || _element1 == NULL || _element2 == NULL)
 	{
 		bigint_errno = BIGINT_INCORRECT_FUNCTION_ARGUMENT;
 		return FAILURE;
 	}
 
-	// In case product and element 1/2 is the same number
+	// In case product and _element1 or _element2 is the same number
 	bigint element1 = bigint_copy(_element1);
 	bigint element2 = bigint_copy(_element2);
 
