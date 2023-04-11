@@ -1,0 +1,944 @@
+<!-- Copyright (c) 2023 Krzysztof Karczewski
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--For search engines:-->
+    <meta name="description" content="The Bigint Library is an open source C library that allows users to make calculations involving signed integers of any size.">
+    <meta name="keywords" content="Bigint, C Programming Language, open source, library, integer, arbitrary-precision arithmetic">
+
+    <title>The Bigint Library</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inconsolata:wght@200;300;400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/style.css"/>
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script async src="./js/script.js"></script>
+
+    <!--Another data for search engines, in JSON Linked Data format.-->
+    <script type="application/ld+json">
+    {
+        "@context" : "https://schema.org",
+        "@Type" : "CreativeWork",
+        "headline" : "The Bigint Library",
+        "description" : "The Bigint Library is an open source C library that allows users to make calculations involving signed integers of any size.",
+        "url" : "https://kakrzysiek.github.io/bigint/docs/index.html",
+        "author" : {
+            "@type" : "Person",
+            "name" : "Krzysztof Karczewski"
+        }
+    }
+    </script>
+</head>
+<body class="page" onload="init()">
+    <div class="page__content-wrapper">
+        <div class="page__content">
+            <div class="header">
+                <!--<i id="app-logo" class="ph-light ph-dice-three"></i>-->
+                <h1 class="header__title text" id="app-name">The Bigint Library</h1>
+                <div class="header__theme-button-wrapper">
+                    <button class="header__theme-button cursor-pointer" onclick="changeTheme()" id="change-theme-button" title="" hidden="true">
+
+                        <!--Clickable picture of sun. Changes mode to light.-->
+                        <div id="sun-picture" hidden="false">
+                            <i class="ph-light ph-sun"></i>
+                        </div>
+
+                        <!--Clickable picture of moon. Changes mode to dark.-->
+                        <div id="moon-picture" hidden="true">
+                            <i class="ph-light ph-moon"></i>
+                        </div>
+
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <h2 class="text"><i class="ph-light ph-list-bullets"></i> Table of contents</h2>
+                <ol>
+                    <li class="text"><a href="#GENERAL_INFO">GENERAL INFO</a></li>
+                    <li class="text"><a href="#REQUIREMENTS">REQUIREMENTS</a></li>
+                    <li class="text"><a href="#USAGE">USAGE</a></li>
+                    <li class="text"><a href="#GETTING_LIBRARY_VERSION_AND_EXTRA_INFO">GETTING LIBRARY VERSION AND EXTRA INFO</a></li>
+                    <li class="text"><a href="#ERROR_HANDLING">ERROR HANDLING</a></li>
+                    <li class="text"><a href="#FUNCTIONS">FUNCTIONS</a></li>
+                    <li class="text"><a href="#ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</a></li>
+                    <li class="text"><a href="#ABOUT_AUTHOR">ABOUT AUTHOR</a></li>
+                </ol>
+
+            <!--Section 1-->
+            <h2 class="text" id="GENERAL_INFO"><i class="ph-light ph-info"></i> General info</h2>
+            <p class="text paragraph">The Bigint Library is an <a href="https://opensource.org/osd" title="Visit the Opean Source Initiative website">open source</a> C library that allows users to make calculations involving signed integers of any size. The only limitation is amount of memory available on the specific platform. <a href="https://github.com/KaKrzysiek/bigint" title="The source code">The code</a> is made available on terms of <a href="https://www.mozilla.org/en-US/MPL/2.0/" title="Read the license"><i> The Mozilla Public License Version 2.0</i></a> described precisely in the LICENSE file. The library is designed to be user-friendly and portable. It consists of two files thus no installation is needed.</p>
+
+            <!--Section 2-->
+            <h2 class="text" id="REQUIREMENTS"><i class="ph-light ph-wall"></i> REQUIREMENTS</h2>
+                <p class="text paragraph">The only requirement is C compiler. The library has been tested on several operating systems including Windows, Linux and MacOS. During trials various compilers were used on both 32-bit and 64-bit platforms. However, if you have any problems with the library on your computer, please contact me so I can fix the bug and make the project more portable.</p>
+
+            <!--Section 3-->
+            <h2 class="text" id="USAGE"><i class="ph-light ph-code"></i> USAGE</h2>
+                <p class="text paragraph">Make sure you have copy of both bigint.c and bigint.h files in your current working directory. Include bigint.h header in your main.c file and then compile both main.c and bigint.c. If you want to, you can follow one of the tutorials available on the Internet and keep compiled library somewhere in your system and just add it to your project during link time.</p>
+
+            <!--Section 4-->
+            <h2 class="text" id="GETTING_LIBRARY_VERSION_AND_EXTRA_INFO"><i class="ph-light ph-star"></i> GETTING LIBRARY VERSION AND EXTRA INFO</h2>
+                <p class="text paragraph">BIGINT_MAJOR, BIGINT_MINOR and BIGINT_PATCHLEVEL are macros that expand to integers representing version of the Bigint Library. BIGINT_MAJOR is incremented each time incompatible interface changes are made. BIGINT_MINOR, likewise, is increased when some new functionality is added and BIGINT_PATCHLEVEL represents number of the latest patch. If you want to generate some extra information about library use bigint_info() function. Current Bigint Library version is 1.0.0</p>
+
+                <div class="file-menu">
+                    <div class="file-menu__filename-wrapper">
+                        <p class="file-menu__filename label">main.c</p>
+                    </div>
+                    <button class="file-menu__copy-button cursor-pointer label" id="copy-button-1" onclick="copyToClipboard(1)" hidden="true">copy</button>
+                </div>
+
+                <div class="source-wrapper scrollbar">
+                    <div class="source">
+                        <p class="source__content">
+                            <span class="source__code source__code--syntax-color-6">#</span>
+                            <span class="source__code source__code--syntax-color-1">include </span>
+                            <span class="source__code source__code--syntax-color-3">"bigint.h"</span>
+                            <br>
+                            <span class="tab"></span>
+                            <span class="source__code source__code--syntax-color-1">int </span>
+                            <span class="source__code source__code--syntax-color-2">main</span>
+                            <span class="source__code source__code--syntax-color-5">(</span>
+                            <span class="source__code source__code--syntax-color-1">int </span>
+                            <span class="source__code source__code--syntax-color-5">argc, </span>
+                            <span class="source__code source__code--syntax-color-1">char </span>
+                            <span class="source__code source__code--syntax-color-5">*argv[]) {</span>
+                            <br>
+                            <span class="tab"></span>
+                            <span class="source__code source__code--syntax-color-3">bigint_info</span>
+                            <span class="source__code source__code--syntax-color-5">();</span>
+                            <br>
+                            <span class="tab"></span>
+                            <span class="source__code source__code--syntax-color-1">return </span>
+                            <span class="source__code source__code--syntax-color-3">0</span>
+                            <span class="source__code source__code--syntax-color-5">;</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-5">}</span>
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <div class="source-wrapper scrollbar">
+                    <div class="source">
+                        <p class="source__content">
+                            <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                            <span class="source__code source__code--syntax-color-5">$ ls</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-3">bigint.c  bigint.h  main.c</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                            <span class="source__code source__code--syntax-color-5">$ gcc bigint.c main.c -o main </span>
+                            <span class="source__code source__code--syntax-color-1"> && </span>
+                            <span class="source__code source__code--syntax-color-5">./main</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-3">This is Bigint Library version 1.0.0 running on Linux</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-3">Copyright (c) 2022 Krzysztof Karczewski</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-3">Compiled by gcc 9.3.0 on Feb 14 2022 19:00:00</span>
+                            <br>
+                            <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                        </p>
+                    </div>
+                </div>
+
+            <!--Section 5-->
+            <h2 class="text" id="ERROR_HANDLING"><i class="ph-light ph-bug"></i> ERROR HANDLING</h2>
+                <p class="text paragraph">If anything goes wrong in any function, it returns -1 or NULL depending on its type. Otherwise 0 or bigint type variable is returned. The library defines the special global enum variable bigint_errno which stores error code of last error that occured. You can check its meaning on the list below or use bigint_strerror() macro which expands to string with problem’s description, as follows:</p>
+
+                <div class="source-wrapper scrollbar">
+                    <div class="source">
+                        <p class="source__content">
+                            <span class="source__code source__code--syntax-color-2">puts</span>
+                            <span class="source__code source__code--syntax-color-5">(bigint_strerror(bigint_errno));</span>
+                        </p>
+                    </div>
+                </div>
+
+                <br>
+                <div class="table-wrapper scrollbar">
+                    <table class="table">
+                        <tr>
+                            <th class="text">value</th>
+                            <th class="text">enum variable</th>
+                            <th class="text">description</th>
+                        </tr>
+                        <tr>
+                            <td class="text">0</td>
+                            <td class="text">ALL_GOOD_IN_THE_HOOD</td>
+                            <td class="text">everything is all right</td>
+                        </tr>
+                        <tr>
+                            <td class="text">1</td>
+                            <td class="text">BIGINT_INCORRECT_STRING</td>
+                            <td class="text">bigint_create() function was given an incorrect string</td>
+                        </tr>
+                        <tr>
+                            <td class="text">2</td>
+                            <td class="text">BIGINT_MEMORY_ALLOCATION_ERROR</td>
+                            <td class="text">failed to allocate memory on the heap</td>
+                        </tr>
+                        <tr>
+                            <td class="text">3</td>
+                            <td class="text">BIGINT_INCORRECT_FUNCTION_ARGUMENT</td>
+                            <td class="text">an incorrect argument was given to a function</td>
+                        </tr>
+                        <tr>
+                            <td class="text">4</td>
+                            <td class="text">BIGINT_TOO_LARGE_BIGINT_TO_CONVERT</td>
+                            <td class="text">bigint variable is too large to be converted to integer</td>
+                        </tr>
+                        <tr>
+                            <td class="text">5</td>
+                            <td class="text">BIGINT_DIVISION_BY_ZERO</td>
+                            <td class="text">division by zero</td>
+                        </tr>
+                        <tr>
+                            <td class="text">6</td>
+                            <td class="text">BIGINT_LENGTH_INDIVISIBLE_BY_FOUR</td>
+                            <td class="text">cannot convert to bigint integer with number of bytes indivisible by four</td>
+                        </tr>
+                        <tr>
+                            <td class="text">7</td>
+                            <td class="text">BIGINT_ERROR_IN_DATA_STRUCTURE</td>
+                            <td class="text">unexpected value in bigint data structure</td>
+                        </tr>
+                    </table>
+                </div>
+
+            <!--Section 6-->
+            <h2 class="text" id="FUNCTIONS"><i class="ph-light ph-function"></i> Functions</h2>
+                <h3 class="text">Initializing variables</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-5">bigint </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">char</span>
+                                <span class="source__code source__code--syntax-color-5"> *number, </span>
+                                <span class="source__code source__code--syntax-color-3">size_t </span>
+                                <span class="source__code source__code--syntax-color-5">length)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this function to initialize bigint variable. Two arguments are required: pointer referencing a char array which contains a number and an exact length of that array. Due to problems that may occur when using null-terminated strings in c, strlen() function is not used in the code. However, if you don't worry about security issues, you can define a special macro to simplify usage of bigint_create()</p>
+
+                    <div class="file-menu">
+                        <div class="file-menu__filename-wrapper">
+                            <p class="file-menu__filename label">main.c</p>
+                        </div>
+                        <button class="file-menu__copy-button cursor-pointer label" id="copy-button-2" onclick="copyToClipboard(2)" hidden="true">copy</button>
+                    </div>
+
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">include </span>
+                                <span class="source__code source__code--syntax-color-3">&lt;string.h&gt;</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">include </span>
+                                <span class="source__code source__code--syntax-color-3">"bigint.h"</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">define </span>
+                                <span class="source__code source__code--syntax-color-2">my_create(</span>
+                                <span class="source__code source__code--syntax-color-8">A</span>
+                                <span class="source__code source__code--syntax-color-5">) bigint_create(A, strlen(A))</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">main</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">argc, </span>
+                                <span class="source__code source__code--syntax-color-1">char </span>
+                                <span class="source__code source__code--syntax-color-5">*argv[]) {</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint num = </span>
+                                <span class="source__code source__code--syntax-color-3">my_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"12345"</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_release</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">1</span>
+                                <span class="source__code source__code--syntax-color-5">, num);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-1">return </span>
+                                <span class="source__code source__code--syntax-color-3">0</span>
+                                <span class="source__code source__code--syntax-color-5">;</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-5">}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">You can choose from three numeral systems: decimal, hexadecimal and binary. In the second case add "0x" characters at the beginning of the string. For example</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"0x499602d2"</span>
+                                <span class="source__code source__code--syntax-color-5">, </span>
+                                <span class="source__code source__code--syntax-color-3">10</span>
+                                <span class="source__code source__code--syntax-color-5">)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">is a proper call of the function.</p>
+                    <p class="text paragraph">In the last case use "0b" characters just like in the next example:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"0b1001101"</span>
+                                <span class="source__code source__code--syntax-color-5">, </span>
+                                <span class="source__code source__code--syntax-color-3">10</span>
+                                <span class="source__code source__code--syntax-color-5">)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Minus at the beginning changes the sign of the number.</p>
+                <h3 class="text">Releasing memory</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_release</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">count, ...)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this variadic function to free memory allocated on heap. After using three bigint variables you should add the following line at the end of your program:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_release</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">3</span>
+                                <span class="source__code source__code--syntax-color-5">, var1, var2, var3)</span>
+                            </p>
+                        </div>
+                    </div>
+                <h3 class="text">Getting size</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-3">size_t </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_size</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this function to check how many bytes are allocated for a certain bigint variable.</p>
+                <h3 class="text">Printing variables</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_print</span>
+                                <span class="source__code source__code--syntax-color-5">(FILE *stream, bigint_base base, bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this function to print <i>number</i> to the <i>stream</i>. Use enum type base to set the base of the numeral system. You can choose from BIN, DEC and HEX.</p>
+
+                    <div class="file-menu">
+                        <div class="file-menu__filename-wrapper">
+                            <p class="file-menu__filename label">main.c</p>
+                        </div>
+                        <button class="file-menu__copy-button cursor-pointer label" id="copy-button-3" onclick="copyToClipboard(3)" hidden="true">copy</button>
+                    </div>
+
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">include </span>
+                                <span class="source__code source__code--syntax-color-3">"bigint.h"</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">main</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">argc, </span>
+                                <span class="source__code source__code--syntax-color-1">char </span>
+                                <span class="source__code source__code--syntax-color-5">*argv[]) {</span>
+                                </br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint var1 = </span>
+                                <span class="source__code source__code--syntax-color-3">bigint_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"123456789"</span>
+                                <span class="source__code source__code--syntax-color-5">, </span>
+                                <span class="source__code source__code--syntax-color-3">9</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint var2 = </span>
+                                <span class="source__code source__code--syntax-color-3">bigint_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"0b1100110011"</span>
+                                <span class="source__code source__code--syntax-color-5">, </span>
+                                <span class="source__code source__code--syntax-color-3">12</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint var3 = </span>
+                                <span class="source__code source__code--syntax-color-3">bigint_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"0xfffaaa555222"</span>
+                                <span class="source__code source__code--syntax-color-5">, </span>
+                                <span class="source__code source__code--syntax-color-3">14</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-2">bigint_print</span>
+                                <span class="source__code source__code--syntax-color-5">(stdout, DEC, var1); </span>
+                                <span class="source__code source__code--syntax-color-3">puts</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">""</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-2">bigint_print</span>
+                                <span class="source__code source__code--syntax-color-5">(stdout, BIN, var2); </span>
+                                <span class="source__code source__code--syntax-color-3">puts</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">""</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-2">bigint_print</span>
+                                <span class="source__code source__code--syntax-color-5">(stdout, HEX, var3); </span>
+                                <span class="source__code source__code--syntax-color-3">puts</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">""</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_release</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">3</span>
+                                <span class="source__code source__code--syntax-color-5">, var1, var2, var3);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-1">return </span>
+                                <span class="source__code source__code--syntax-color-3">0</span>
+                                <span class="source__code source__code--syntax-color-5">;</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-5">}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                                <span class="source__code source__code--syntax-color-5">$ ls</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">bigint.c  bigint.h  main.c</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                                <span class="source__code source__code--syntax-color-5">$ gcc bigint.c main.c -o main </span>
+                                <span class="source__code source__code--syntax-color-1"> && </span>
+                                <span class="source__code source__code--syntax-color-5">./main</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">123456789</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">0b1100110011</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">0xfffaaa555222</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">If the only stream you are going to use is stdout and you want all variables to be printed in decimal system you can define another macro to shorten code.</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">define </span>
+                                <span class="source__code source__code--syntax-color-2">my_print(</span>
+                                <span class="source__code source__code--syntax-color-8">A</span>
+                                <span class="source__code source__code--syntax-color-5">) bigint_print(stdout, DEC, A)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Thereby the following lines are equivalent:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">my_print</span>
+                                <span class="source__code source__code--syntax-color-5">(var1)</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-5">bigint_print(stdout, DEC, var1)</span>
+                            </p>
+                        </div>
+                    </div>
+                <h3 class="text">Addition</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_add</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">count, bigint sum, ...)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function adds multiple summands and saves the result in <i>sum</i>. As it is variadic, remember to pass <i>count</i> of summands to the function. Note that sum must be already created before function call. Example usage:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_add</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">4</span>
+                                <span class="source__code source__code--syntax-color-5">, sum, var1, var2, var3, var4)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">In mathematical notation it is equivalent to:</p>
+                    <p class="text paragraph">sum = var1 + var2 + var3 + var4</p>
+                <h3 class="text">Subtraction</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_subtract</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint difference, bigint minuend, bigint subtrahend)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function subtracts two numbers and saves the result in <i>difference</i>. It is equivalent to:</p>
+                    <p class="text paragraph">difference = minuend - subtrahend</p>
+                <h3 class="text">Incrementation and decrementation</h3>
+                    <p class="text paragraph">There are also fast functions for incrementation and decrementation.</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_increment</span>
+                                <span class="source__code source__code--syntax-color-5">(number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">which is equivalent to number += 1</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_decrement</span>
+                                <span class="source__code source__code--syntax-color-5">(number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">which is equivalent to number -= 1</p>
+                <h3 class="text">Multiplication</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_multiply</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">count, bigint product, ...)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This functions multiplies numerous factors and saves the result in <i>product</i>. As it is variadic, remember to pass <i>count</i> of factors to the function. Note that product must be already created before function call. Example usage:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_multiply</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">2</span>
+                                <span class="source__code source__code--syntax-color-5">, product, var1, var2)</span>
+                            </p>
+                        </div>
+                    </div>
+                <h3 class="text">Division</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_divide</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint dividend, bigint divisor, bigint quotient, bigint remainder)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function divides <i>dividend</i> by <i>divisor</i> and saves result to <i>quotient</i>. If there is any remainder, it is saved to <i>remainder</i> variable. If you want to perform integer division and you do not care about <i>remainder</i>, pass NULL instead of it. If all you need is remainder pass NULL instead of <i>quotient</i>.</p>
+                    <p class="text paragraph">Getting both quotient and remainder:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_divide</span>
+                                <span class="source__code source__code--syntax-color-5">(var1, var2, var3, var4)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Getting only quotient:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_divide</span>
+                                <span class="source__code source__code--syntax-color-5">(var1, var2, var3, </span>
+                                <span class="source__code source__code--syntax-color-3">NULL</span>
+                                <span class="source__code source__code--syntax-color-5">)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Getting only remainder:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">bigint_divide</span>
+                                <span class="source__code source__code--syntax-color-5">(var1, var2, </span>
+                                <span class="source__code source__code--syntax-color-3">NULL</span>
+                                <span class="source__code source__code--syntax-color-5">, var4)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Note that variables you pass to function must be already initialized.</p>
+                <h3 class="text">Comparison</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_compare</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number1, bigint number2)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this function to compare two numbers. It returns:</p>
+                    <ul>
+                        <li class="text">1 if number1 > number2</li>
+                        <li class="text">-1 if number2 > number1</li>
+                        <li class="text">0 if number1 == number2</li>
+                    </ul>
+                <h3 class="text">Managing sign</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_change_sign</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function changes sign of the <i>number</i>. In is equivalent to multiplying the number by -1</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_absolute_value</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this function to change <i>number</i> sign to positive.</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_get_sign</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function returns sign of the number: 1 in case it is negative, 0 in case it is positive or equals 0.</p>
+                <h3 class="text">Copying</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-5">bigint </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_copy</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">As bigint is a pointer type, the special function is required for copying. If you want to create a copy of <i>b</i> variable and store it in <i>a</i> variable, write:</p>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-5">bigint a = bigint_copy(b);</span>
+                            </p>
+                        </div>
+                    </div>
+                <h3 class="text">Bitwise negation</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_not</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Use this function to perform logical negation on each bit of the <i>number</i>. Note that number is stored in 32-bit segments. For example:</p>
+
+                    <div class="file-menu">
+                        <div class="file-menu__filename-wrapper">
+                            <p class="file-menu__filename label">main.c</p>
+                        </div>
+                        <button class="file-menu__copy-button cursor-pointer label" id="copy-button-4" onclick="copyToClipboard(4)" hidden="true">copy</button>
+                    </div>
+
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">include </span>
+                                <span class="source__code source__code--syntax-color-3">&lt;string.h&gt;</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">include </span>
+                                <span class="source__code source__code--syntax-color-3">"bigint.h"</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">define </span>
+                                <span class="source__code source__code--syntax-color-2">my_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-8">A</span>
+                                <span class="source__code source__code--syntax-color-5">) bigint_create(A, strlen(A))</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">define </span>
+                                <span class="source__code source__code--syntax-color-2">my_print</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-8">A</span>
+                                <span class="source__code source__code--syntax-color-5">) bigint_print(stdout, HEX, A); puts("")</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">main</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">argc, </span>
+                                <span class="source__code source__code--syntax-color-1">char </span>
+                                <span class="source__code source__code--syntax-color-5">*argv[]) {</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint var1 = </span>
+                                <span class="source__code source__code--syntax-color-3">my_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"0xffff"</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint var2 = </span>
+                                <span class="source__code source__code--syntax-color-3">my_create</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">"0xffffffffffff"</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_not</span>
+                                <span class="source__code source__code--syntax-color-5">(var1);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_not</span>
+                                <span class="source__code source__code--syntax-color-5">(var2);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">my_print</span>
+                                <span class="source__code source__code--syntax-color-5">(var1);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">my_print</span>
+                                <span class="source__code source__code--syntax-color-5">(var2);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_release</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">2</span>
+                                <span class="source__code source__code--syntax-color-5">, var1, var2);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-1">return </span>
+                                <span class="source__code source__code--syntax-color-3">0</span>
+                                <span class="source__code source__code--syntax-color-5">;</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-5">}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                                <span class="source__code source__code--syntax-color-5">$ ls</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">bigint.c  bigint.h  main.c</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                                <span class="source__code source__code--syntax-color-5">$ gcc bigint.c main.c -o main </span>
+                                <span class="source__code source__code--syntax-color-1"> && </span>
+                                <span class="source__code source__code--syntax-color-5">./main</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">0xffff0000</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">0xffff000000000000</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                            </p>
+                        </div>
+                    </div>
+                <h3 class="text">Bitwise shift</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_shift_left</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number, </span>
+                                <span class="source__code source__code--syntax-color-3">size_t </span>
+                                <span class="source__code source__code--syntax-color-5">count)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">Left arithmetic shift is performed on <i>number</i>. It is equivalent to multiplying by 2 raised to the power of <i>count</i>.</p>
+                <h3 class="text">Conversion to bigint</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-5">bigint </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_convert_to_bigint</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">void </span>
+                                <span class="source__code source__code--syntax-color-5">*integer, </span>
+                                <span class="source__code source__code--syntax-color-3">size_t </span>
+                                <span class="source__code source__code--syntax-color-5">length)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function converts unsigned integer of size <i>length</i> pointed to by <i>integer</i>. Type conversion of pointer passed to function is a good habit. Note that number of bytes of <i>integer</i> must be a multiple of 4.</p>
+
+                    <div class="file-menu">
+                        <div class="file-menu__filename-wrapper">
+                            <p class="file-menu__filename label">main.c</p>
+                        </div>
+                        <button class="file-menu__copy-button cursor-pointer label" id="copy-button-5" onclick="copyToClipboard(5)" hidden="true">copy</button>
+                    </div>
+
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-6">#</span>
+                                <span class="source__code source__code--syntax-color-1">include </span>
+                                <span class="source__code source__code--syntax-color-3">"bigint.h"</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">main</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-5">argc, </span>
+                                <span class="source__code source__code--syntax-color-1">char </span>
+                                <span class="source__code source__code--syntax-color-5">*argv[]) {</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-1">long unsigned int </span>
+                                <span class="source__code source__code--syntax-color-5">var_int = </span>
+                                <span class="source__code source__code--syntax-color-3">123456789</span>
+                                <span class="source__code source__code--syntax-color-5">;</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-5">bigint var_bint = </span>
+                                <span class="source__code source__code--syntax-color-3">bigint_convert_to_bigint</span>
+                                <span class="source__code source__code--syntax-color-5">((</span>
+                                <span class="source__code source__code--syntax-color-1">void</span>
+                                <span class="source__code source__code--syntax-color-5">*)&var_int, </span>
+                                <span class="source__code source__code--syntax-color-1">sizeof</span>
+                                <span class="source__code source__code--syntax-color-5">(var_int));</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_print</span>
+                                <span class="source__code source__code--syntax-color-5">(stdout, DEC, var_bint); </span>
+                                <span class="source__code source__code--syntax-color-3">puts</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">""</span>
+                                <span class="source__code source__code--syntax-color-5">);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-3">bigint_release</span>
+                                <span class="source__code source__code--syntax-color-5">(</span>
+                                <span class="source__code source__code--syntax-color-3">1</span>
+                                <span class="source__code source__code--syntax-color-5">, var_bint);</span>
+                                <br>
+                                <span class="tab"></span>
+                                <span class="source__code source__code--syntax-color-1">return </span>
+                                <span class="source__code source__code--syntax-color-3">0</span>
+                                <span class="source__code source__code--syntax-color-5">;</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-5">}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                                <span class="source__code source__code--syntax-color-5">$ ls</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">bigint.c  bigint.h  main.c</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                                <span class="source__code source__code--syntax-color-5">$ gcc bigint.c main.c -o main </span>
+                                <span class="source__code source__code--syntax-color-1"> && </span>
+                                <span class="source__code source__code--syntax-color-5">./main</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-3">123456789</span>
+                                <br>
+                                <span class="source__code source__code--syntax-color-2">krzysiek@krzysiek:~/Documents</span>
+                            </p>
+                        </div>
+                    </div>
+                <h3 class="text">Conversion to integer</h3>
+                    <div class="source-wrapper scrollbar">
+                        <div class="source">
+                            <p class="source__content">
+                                <span class="source__code source__code--syntax-color-1">int </span>
+                                <span class="source__code source__code--syntax-color-2">bigint_convert_to_int</span>
+                                <span class="source__code source__code--syntax-color-5">(bigint number, </span>
+                                <span class="source__code source__code--syntax-color-3">uintmax_t </span>
+                                <span class="source__code source__code--syntax-color-5">*integer)</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text paragraph">This function converts a bigint number to integer pointed to by <i>integer</i>. It omitts sign and if number is too big to be converted to integer, it returns -1 and information about overflow is saved in bigint_errno. The uintmax_t type is the largest unsigned integer that system can handle without this library. It can be found in stdint.h header. If you want to print it, get interested in inttypes.h header.</p>
+
+            <!--Section 7-->
+            <h2 class="text" id="ACKNOWLEDGEMENTS"><i class="ph-light ph-gift"></i> ACKNOWLEDGEMENTS</h2>
+                <p class="text paragraph">The author thanks Aleksander Bąba, Augustyn Majtyka, Andrzej Mazur, Jerzy Karczewski and Kamila Prabucka for help in this project.</p>
+
+            <!--Section 8-->
+            <h2 class="text" id="ABOUT_AUTHOR"><i class="ph-light ph-user"></i> ABOUT AUTHOR</h2>
+                <p class="text paragraph">My name is Krzysztof Karczewski. I am not a professional programmer and I have created this project, as well as the documentation, in my free time. If you want to contact me in the matter of the library or any other, send me an <a href="" title="JavaScript turned off" id="contact">email</a> please.</p>
+                    <div style="height: 80px"></div>
+        </div>
+    </div>
+</body>
+</html>

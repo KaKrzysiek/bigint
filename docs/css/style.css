@@ -1,0 +1,341 @@
+/*
+ * Copyright (c) 2023 Krzysztof Karczewski
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+:root,
+    /*Dark theme*/
+    :root.dark{
+        --text-color: #C9D1D9;
+        --bg-color: #0e1013;
+        --table-even-rows-color: #161B22;
+        --table-odd-rows-color: #0D1117;
+        --code-window-color: #161B22;
+        --border-color: #30363D;
+        --filename-box-color: #343941;
+        --copy-button-border-color: #444;
+        --scrollbar-color: dark;
+        /*Syntax highlighting*/
+        --syntax-color-1: #6f9ad3;
+        --syntax-color-2: #C1CAD2;
+        --syntax-color-3: #be9078;
+        --syntax-color-4: #7B9FBF;
+        --syntax-color-5: #C1CAD2;
+        --syntax-color-6: #C9D1D9;
+        --syntax-color-7: #717983;
+        --syntax-color-8: #FFA657;
+  }
+
+    /*Light theme*/
+    :root.light{
+        --text-color: #24292F;
+        --bg-color: #FFFFFF;
+        --table-even-rows-color: #FFFFFF;
+        --table-odd-rows-color: #FFFFFF;
+        --code-window-color: #e3e8ec;
+        --border-color: #D0D7DE;
+        --filename-box-color: #F6F8FA;
+        --copy-button-border-color: #D0D7DE;
+        --scrollbar-color: light;
+        /*Syntax highlighting*/
+        --syntax-color-1: #6f9ad3;
+        --syntax-color-2: #8250DF;
+        --syntax-color-3: #be9078;
+        --syntax-color-4: #0A3069;
+        --syntax-color-5: #24292F;
+        --syntax-color-6: #24292F;
+        --syntax-color-7: #6E7781;
+        --syntax-color-8: #953800;
+    }
+
+html{
+  font-family: Inter;
+}
+
+h2{
+  font-weight: 200 !important;
+  font-size: 1.6em;
+  text-transform: uppercase;
+  margin-top: 1.6em;
+}
+
+h3{
+  font-weight: 500;
+  margin-top: 30px;
+}
+
+th{
+  font-weight: 500
+}
+
+#app-name{
+  position: absolute;
+  width: 300px;
+  margin-left: calc(50% - 150px);
+  left: 0;
+  font-family: 'Inter';
+  font-weight: 200;
+}
+
+#app-logo{
+  color: var(--text-color);
+  font-size: 40px;
+  margin-top: 22px;
+  margin-left: 10px;
+}
+
+#sun-picture{
+
+}
+
+#sun-picture i{
+  font-size: 24px;
+  color: var(--text-color);
+}
+
+#moon-picture{
+
+}
+
+#moon-picture i{
+  font-size: 24px;
+  color: var(--text-color);
+}
+
+/*Page content*/
+.page{
+    background-color: var(--bg-color);
+}
+
+.page__content-wrapper{
+    min-width: 320px;
+    max-width: 970px;
+    width: auto;
+    background-color: var(--bg-color);
+    margin-left: auto;
+    margin-right: auto;
+    border: none !important;
+}
+
+.page__content{
+    margin: 20px;
+}
+
+/*Standard text formatting*/
+.text{
+    color: var(--text-color);
+    font-family: Inter;
+    font-weight: 300
+}
+
+/*Header with title and button changing theme*/
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.header__theme-button-wrapper{
+    padding: 0;
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+    border: none;
+    width: 100%;
+}
+
+.header__theme-button{
+    padding: 0;
+    margin: 0;
+    border: none;
+    height: 30px;
+    width: 30px;
+    background: none;
+    margin-top: 22px;
+    position: relative;
+    float: right;
+}
+
+.paragraph{
+    font-size: 17;
+    line-height: 1.4;
+    font-weight: 300;
+}
+
+/*Used in buttons and filenames*/
+.label{
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: medium;
+}
+
+.scrollbar{
+    color-scheme: var(--scrollbar-color);
+}
+
+/*Used in buttons*/
+.cursor-pointer:hover{
+    cursor: pointer;
+}
+
+/*Small menu attached to each source code*/
+.file-menu{
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    padding: 3px;
+    margin-bottom: 3px;
+}
+
+.file-menu__filename-wrapper{
+    background-color: var(--code-window-color);
+    border-radius: 0px;
+    width: 70px;
+    height: 26px;
+    border: 1px solid var(--copy-button-border-color);
+    font-family: Inconsolata;
+    font-weight: 400;
+}
+
+.file-menu__filename{
+    text-align: center;
+    margin: 3px 0px 2px 0px;
+}
+
+.file-menu__filename.label{
+  font-family: Inconsolata;
+  font-weight: 400;
+  margin: 4px 0px 2px 0px;
+}
+
+.file-menu__copy-button{
+    background-color: var(--code-window-color);
+    border-radius: 0px;
+    width: 70px;
+    height: 28px;
+    border: 1px solid var(--copy-button-border-color);
+    font-family: Inconsolata;
+    font-weight: 400;
+}
+
+.file-menu__copy-button:active{
+    border-style: solid;
+}
+
+/*Source code*/
+.source-wrapper{
+    border-radius: 0px;
+    background-color: var(--code-window-color);
+    border: 1px solid var(--copy-button-border-color);
+    padding: 5px;
+    width: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.source{
+    margin: 10px;
+    background-color: var(--code-window-color);
+}
+
+/*The font size is set to 0 in order to make html look clean.*/
+.source__content{
+    font-family: 'Fira Code';
+    font-weight: 300;
+    font-size: 0;
+}
+
+/*Tab used in code*/
+.tab{
+    display: inline-block;
+    margin-left: 30px;
+}
+
+.source__code{
+    font-size: medium;
+}
+
+/*Syntax highlighting*/
+.source__code--syntax-color-1{
+    color: var(--syntax-color-1);
+}
+
+.source__code--syntax-color-2{
+    color: var(--syntax-color-2);
+}
+
+.source__code--syntax-color-3{
+    color: var(--syntax-color-3);
+}
+
+.source__code--syntax-color-4{
+    color: var(--syntax-color-4);
+}
+
+.source__code--syntax-color-5{
+    color: var(--syntax-color-5);
+}
+
+.source__code--syntax-color-6{
+    color: var(--syntax-color-6);
+}
+
+.source__code--syntax-color-7{
+    color: var(--syntax-color-7);
+}
+
+.source__code--syntax-color-8{
+    color: var(--syntax-color-8);
+}
+
+li{
+    line-height: 1.4;
+}
+
+/*Table style*/
+td, th{
+    border-collapse: collapse;
+    border: 2px solid var(--border-color);
+    padding: 13px;
+}
+
+tr:nth-child(even){
+    background-color: var(--table-even-rows-color);
+}
+
+.table-wrapper{
+    width: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.table{
+    width: 100%;
+    border-collapse: collapse;
+    border: var(--border-color) solid 2px;
+}
+
+hr{
+    border: 1px solid var(--border-color);
+}
+
+/*Links*/
+a{
+    color: #4580C4;
+    font-family: Arial, sans-serif;
+}
+
+a:link, a:visited, a:active{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+.image{
+    width: 100%;
+    height: 100%;
+}
