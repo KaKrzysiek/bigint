@@ -84,6 +84,8 @@ Use this function to initialize bigint variable. Two arguments are required: poi
 #define my_create(A) bigint_create(A, strlen(A))
 int main(int argc, char *argv[]) {
     bigint num = my_create("12345");
+    bigint_release(1, num);
+    return 0;
 }
 ```
 
@@ -309,14 +311,13 @@ Use this function to perform logical negation on each bit of the *number*. Note 
 #define my_create(A) bigint_create(A, strlen(A))
 #define my_print(A) bigint_print(stdout, HEX, A);puts("")
 int main(int argc, char *argv[]) {
-	// One 32-bit segment used for this variable
 	bigint var1 = my_create("0xffff");
-	// Two 32-bit segments used for this variable
 	bigint var2 = my_create("0xffffffffffff");
 	bigint_not(var1);
 	bigint_not(var2);
 	my_print(var1);
 	my_print(var2);
+	bigint_release(2, var1, var2);
 	return 0;
 }
 ```
@@ -382,8 +383,8 @@ This function converts a bigint number to integer pointed to by *integer*. It om
 
 ## ACKNOWLEDGEMENTS
 
-The author thanks Augustyn Majtyka, Andrzej Mazur and Jerzy Karczewski for help in this project.
+The author thanks Aleksander Bąba, Augustyn Majtyka, Andrzej Mazur, Jerzy Karczewski and Kamila Prabucka for help in this project.
 
 ## ABOUT AUTHOR
 
-My name is Krzysztof Karczewski. I am not a professional programmer and I have created this project in my free time. If you want to contact me in the matter of the library or any other, send me an email please to the following address: <kakrzysiek13@gmail.com>.
+My name is Krzysztof Karczewski. I am not a professional programmer and I have created this project in my free time. If you want to contact me in the matter of the library or any other, send me an email please. You can find the address on the [homepage](https://kakrzysiek.github.io/bigint/docs/index.html) of the Bigint Library.
