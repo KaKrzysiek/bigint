@@ -387,4 +387,4 @@ The author thanks Aleksander Bąba, Augustyn Majtyka, Andrzej Mazur, Jerzy Karcz
 
 ## ABOUT AUTHOR
 
-My name is Krzysztof Karczewski. I am not a professional programmer and I have created this project in my free time. If you want to contact me in the matter of the library or any other, send me an email please. You can find the address on the [homepage](https://kakrzysiek.github.io/bigint/docs/index.html) of the Bigint Library.
+My name is Krzysztof Karczewski. I am not a professional programmer and I have created this project in my free time. If you want to contact me in the matter of the library or any other, send me an email please. You can find the address on the [homepage](https://kakrzysiek.github.io/bigint) of the Bigint Library.
